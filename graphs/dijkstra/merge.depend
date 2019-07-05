@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1549790777 source:c:\users\hp\documents\codeblocks\merge\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<queue>
+
