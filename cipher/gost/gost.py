@@ -1,5 +1,47 @@
 import random
 
+class GOST:
+    def __init__(self, p, a, b, q, p_x, p_y):
+        self.p_point = Point(p_x, p_y, a, b, p)
+        self.q = q; self.a = a; self.b = b; self.p = p
+
+    def sign(self, message, d, k=0):
+        e = message % self.q
+        if e == 0:
+            e = 1
+        if k == 0:
+            k = random.randint(1, self.q - 1)
+        r, s = 0, 0
+        while r == 0 or s == 0:
+            c_point = k * self.p_point
+            r = c_point.x % self.q
+            s = (r * d + k * e) % self.q
+        return r, s
+
+    def verify(self, message, sign, Q):
+        e = message % self.q
+        if e == 0:
+            e = 1
+        v = Point._mod_inverse(e, self.q)
+        z1 = (sign[1] * v) % self.q
+        z2 = (-sign[0] * v) % self.q
+        c_point = z1 * self.p_point + z2 * Q
+        r = c_point.x % self.q
+        if r == sign[0]:
+            return True
+        return False
+
+    
+    
+    
+    
+    
+    
+    
+    
+####################################################################    
+    
+    
 class Point:
     def __init__(self, x=0, y=0, a=0, b=0, p=0):
         self.x = x; self.y = y; self.a = a; self.b = b; self.p = p
@@ -36,39 +78,3 @@ class Point:
             x //= 2
             temp = temp + temp
         return result
-
-##########################################################
-
-
-
-
-class GOST:
-    def __init__(self, p, a, b, q, p_x, p_y):
-        self.p_point = Point(p_x, p_y, a, b, p)
-        self.q = q; self.a = a; self.b = b; self.p = p
-
-    def sign(self, message, d, k=0):
-        e = message % self.q
-        if e == 0:
-            e = 1
-        if k == 0:
-            k = random.randint(1, self.q - 1)
-        r, s = 0, 0
-        while r == 0 or s == 0:
-            c_point = k * self.p_point
-            r = c_point.x % self.q
-            s = (r * d + k * e) % self.q
-        return r, s
-
-    def verify(self, message, sign, Q):
-        e = message % self.q
-        if e == 0:
-            e = 1
-        v = Point._mod_inverse(e, self.q)
-        z1 = (sign[1] * v) % self.q
-        z2 = (-sign[0] * v) % self.q
-        c_point = z1 * self.p_point + z2 * Q
-        r = c_point.x % self.q
-        if r == sign[0]:
-            return True
-        return False
