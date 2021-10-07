@@ -24,11 +24,11 @@ def main():
         sum = 0 # сумма
         prev_num = 9 # предыдущее накопленное число
         prev_sign = '1' # предыдущий "знак"('0'/'1'/'2') в выражении (изначально +)
-        s = '9' # выражение
+        expression = '9' # выражение
         for i in range(9):
             if seq[i] != '0':
-                s += '+' if seq[i] == '1' else '-'
-            s += str(NUMBERS[i+1])
+                expression += '+' if seq[i] == '1' else '-'
+            expression += str(NUMBERS[i+1])
             if seq[i] == '0':
                 if prev_num:
                     prev_num *= 10
@@ -55,7 +55,7 @@ def main():
             elif prev_sign == '2':
                 sum -= prev_num
         if sum == RESULT_SUM:
-            print(s, '=', sum)
+            print(expression, '=', sum, sep='')
 
 if __name__ == '__main__':
     main()
